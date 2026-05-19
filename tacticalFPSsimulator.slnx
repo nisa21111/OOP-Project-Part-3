@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="tacticalFPSsimulator/tacticalFPSsimulator.vcxproj" Id="bdf9e0c7-08e0-4569-8431-023cce57f3f6" />
+</Solution>
