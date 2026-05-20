@@ -1,32 +1,13 @@
-#include "agent.h"
-
+#include "logger.h"
 #include <iostream>
-#include <memory>
-#include <vector>
 
 int main() {
-	std::vector<std::unique_ptr<Agent>> agents;
 
-	agents.push_back(std::make_unique<Brimstone>());
-	agents.push_back(std::make_unique<Jett>());
-	agents.push_back(std::make_unique<Sova>());
-	agents.push_back(std::make_unique<Sage>());
+    LOG_INFO("Game started");
+    LOG_WARN("This is a warning");
+    LOG_ERROR("Something went wrong");
 
-	for (const auto& agent : agents) {
-		agent->display();
+    std::cout << "Logger test done\n";
 
-		std::cout
-			<< agent->callout("start")
-			<< "\n\n";
-		std::cout << "Abilities:\n";
-
-		for (const auto& ability : agent->abilities()) {
-			std::cout << " - " << ability << "\n";
-		}
-		std::cout << "\n====================\n\n";
-	}
-
-	return 0;
-
-
+    return 0;
 }
