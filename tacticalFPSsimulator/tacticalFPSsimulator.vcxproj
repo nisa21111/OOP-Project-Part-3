@@ -18,6 +18,32 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\agent.cpp" />
+    <ClCompile Include="src\agentFactory.cpp" />
+    <ClCompile Include="src\gameMap.cpp" />
+    <ClCompile Include="src\gameSession.cpp" />
+    <ClCompile Include="src\gameStats.cpp" />
+    <ClCompile Include="src\logger.cpp" />
+    <ClCompile Include="src\menu.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\agent.h" />
+    <ClInclude Include="headers\agentFactory.h" />
+    <ClInclude Include="headers\command.h" />
+    <ClInclude Include="headers\configManager.h" />
+    <ClInclude Include="headers\exceptions.h" />
+    <ClInclude Include="headers\gameMap.h" />
+    <ClInclude Include="headers\gameSession.h" />
+    <ClInclude Include="headers\gamesStats.h" />
+    <ClInclude Include="headers\logger.h" />
+    <ClInclude Include="headers\menu.h" />
+    <ClInclude Include="headers\observer.h" />
+    <ClInclude Include="headers\outcomeStrategy.h" />
+    <ClInclude Include="headers\repository.h" />
+    <ClInclude Include="headers\scenarioNode.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -71,7 +97,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\d3nyb\SFML-3.1.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\d3nyb\visualStudioProjects\tacticalFPSsimulator\tacticalFPSsimulator\headers;C:\Users\d3nyb\SFML-3.1.0\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\d3nyb\SFML-3.1.0\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
