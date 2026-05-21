@@ -1,74 +1,47 @@
 #include <iostream>
-#include "repository.h"
-#include "scenarionode.h"
+#include <memory>
+#include "observer.h"
+#include "gamesStats.h"
 
 int main() {
 
-    std::cout << "=== SCENARIO NODE + REPOSITORY TEST ===\n\n";
+    std::cout << "=== OBSERVER TEST ===\n\n";
 
     // =====================================================
-    // 1. Create repository
+    // 1. Setup Subject + Observer
     // =====================================================
-    Repository<ScenarioNode> repo;
 
-    auto node1 = std::make_shared<ScenarioNode>(
-        "spawn",
-        "start",
-        "You spawn on Ascent attacker side.",
-        NodeType::NARRATIVE
-    );
+    auto bus = std::make_shared<EventBus>();
+    auto stats = std::make_shared<GameStats>();
 
-    auto node2 = std::make_shared<ScenarioNode>(
-        "mid",
-        "rotate",
-        "Team is rotating mid-round.",
-        NodeType::EVENT
-    );
-
-    repo.add("spawn", node1);
-    repo.add("mid", node2);
+    bus->subscribe(stats);
 
     // =====================================================
-    // 2. Basic access
+    // 2. Fire events manually
     // =====================================================
-    std::cout << "All keys:\n";
-    for (const auto& k : repo.keys()) {
-        std::cout << " - " << k << "\n";
-    }
 
-    std::cout << "\nDisplaying spawn node:\n";
-    repo.get("spawn")->display();
+    bus->notify({ "SPIKE_DROPPED", "Spike dropped in mid" });
+    bus->notify({ "TEAM_IGNORED", "Teammates went A instead of B" });
+    bus->notify({ "ROTATE", "Player rotated mid-round" });
+    bus->notify({ "SPIKE_DROPPED", "Spike dropped again" });
 
     // =====================================================
-    // 3. findIf template
+    // 3. Simulate round end
     // =====================================================
-    auto found = findIf<ScenarioNode>(
-        repo,
-        [](const std::shared_ptr<ScenarioNode>& node) {
-            return node->id() == "mid";
-        }
-    );
 
-    if (found) {
-        std::cout << "\nFound node via findIf:\n";
-        (*found)->display();
-    }
+    stats->recordRound(true);
+    stats->recordRound(false);
+    stats->recordRound(true);
 
     // =====================================================
-    // 4. filterAll template
+    // 4. Print results
     // =====================================================
-    auto results = filterAll<ScenarioNode>(
-        repo,
-        [](const std::shared_ptr<ScenarioNode>& node) {
-            return node->type() == NodeType::EVENT;
-        }
-    );
 
-    std::cout << "\nEvent nodes count: " << results.size() << "\n";
+    std::cout << "\n--- STATS SUMMARY ---\n";
+    stats->printSummary();
 
-    for (auto& n : results) {
-        n->display();
-    }
+    std::cout << "\n--- EVENT LOG ---\n";
+    stats->printEventLog();
 
     std::cout << "\n=== TEST DONE ===\n";
 
