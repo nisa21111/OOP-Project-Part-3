@@ -25,9 +25,7 @@
     <ClCompile Include="src\command.cpp" />
     <ClCompile Include="src\configManager.cpp" />
     <ClCompile Include="src\gameMap.cpp" />
-    <ClCompile Include="src\gameSession.cpp" />
     <ClCompile Include="src\logger.cpp" />
-    <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\outcomeStrategy.cpp" />
     <ClCompile Include="src\scenarioNode.cpp" />
   </ItemGroup>
@@ -38,10 +36,8 @@
     <ClInclude Include="headers\configManager.h" />
     <ClInclude Include="headers\exceptions.h" />
     <ClInclude Include="headers\gameMap.h" />
-    <ClInclude Include="headers\gameSession.h" />
     <ClInclude Include="headers\gamesStats.h" />
     <ClInclude Include="headers\logger.h" />
-    <ClInclude Include="headers\menu.h" />
     <ClInclude Include="headers\observer.h" />
     <ClInclude Include="headers\outcomeStrategy.h" />
     <ClInclude Include="headers\repository.h" />

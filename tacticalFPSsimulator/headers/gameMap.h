@@ -1,23 +1,15 @@
 #pragma once
+
 #include "scenarioNode.h"
 #include <string>
 #include <memory>
 #include <unordered_map>
-#include <stdexcept>
-
-// Clasa de exceptie pentru erorile de incarcare a scenariilor
-class ScenarioLoadException : public std::runtime_error {
-public:
-    explicit ScenarioLoadException(const std::string& message)
-        : std::runtime_error("ScenarioLoadException: " + message) {}
-};
 
 class GameMap {
     std::string              name_;
     std::string              startNodeId_;
     std::string              defaultBackground_;
 
-    // Înlocuit Repository cu unordered_map nativ pentru stabilitate absoluta a memoriei
     std::unordered_map<std::string, std::shared_ptr<ScenarioNode>> nodes_;
 
 public:

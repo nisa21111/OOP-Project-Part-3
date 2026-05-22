@@ -1,7 +1,6 @@
 #include "command.h"
 #include <iostream>
 
-// ─── FunctionCommand ───────────────────────────────────────────────────────────
 
 FunctionCommand::FunctionCommand(std::string desc,
     std::function<void()> action,
@@ -17,7 +16,6 @@ bool FunctionCommand::canUndo() const { return undoAction_ != nullptr; }
 void FunctionCommand::undo() { if (undoAction_) undoAction_(); }
 std::string FunctionCommand::description() const { return desc_; }
 
-// ─── CommandHistory ────────────────────────────────────────────────────────────
 
 void CommandHistory::execute(std::unique_ptr<ICommand> cmd) {
     cmd->execute();

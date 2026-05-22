@@ -4,13 +4,12 @@
 #include <optional>
 
 struct Choice {
-    std::string key;                          // "a", "b", "mid"
-    std::string label;                        // textul afisat pe buton
+    std::string key;
+    std::string label;
     std::string nextNodeId;
-    std::optional<std::string> eventTrigger;  // eveniment generat la alegere
+    std::optional<std::string> eventTrigger;
 };
 
-// Adaugat TERMINAL in enum pentru a repara eroarea de identificator nedeclarat
 enum class NodeType { NARRATIVE, CHOICE, EVENT, OUTCOME, TERMINAL };
 
 class ScenarioNode {
@@ -36,7 +35,7 @@ public:
     [[nodiscard]] const std::string& id()              const { return id_; }
     [[nodiscard]] const std::string& calloutKey()      const { return calloutKey_; }
     [[nodiscard]] const std::string& narrative()       const { return narrativeText_; }
-    [[nodiscard]] NodeType              type()            const { return type_; }
+    [[nodiscard]] NodeType                   type()            const { return type_; }
     [[nodiscard]] const std::vector<Choice>& choices()         const { return choices_; }
     [[nodiscard]] bool                       isTerminal()      const { return isTerminal_; }
     [[nodiscard]] bool                       isWin()           const { return isWin_; }

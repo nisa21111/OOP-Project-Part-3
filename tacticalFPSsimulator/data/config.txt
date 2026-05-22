@@ -1,4 +1,0 @@
-team_coordination = 6
-map_control = 8
-debug_mode = true
-game_speed = 2

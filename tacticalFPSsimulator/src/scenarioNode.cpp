@@ -1,5 +1,4 @@
 #include "scenarioNode.h"
-#include <utility>
 
 ScenarioNode::ScenarioNode(std::string id, std::string calloutKey,
     std::string narrative, NodeType type)
@@ -7,10 +6,8 @@ ScenarioNode::ScenarioNode(std::string id, std::string calloutKey,
     , calloutKey_(std::move(calloutKey))
     , narrativeText_(std::move(narrative))
     , type_(type)
-    , choices_()
-    , isTerminal_(false)      // IMPORTANT: Previne gunoiul din memorie (Access Violation)
-    , isWin_(false)           // IMPORTANT: Previne gunoiul din memorie
-    , backgroundImage_("")
+    , isTerminal_(false)
+    , isWin_(false)
 {
 }
 

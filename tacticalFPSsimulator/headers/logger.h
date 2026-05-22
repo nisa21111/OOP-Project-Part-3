@@ -33,7 +33,6 @@ public:
     void error(const std::string& msg);
 };
 
-// macros (asta explică LOG_INFO)
 #define LOG_INFO(msg)    Logger::instance().info(msg)
 #define LOG_WARN(msg)    Logger::instance().warning(msg)
 #define LOG_ERROR(msg)   Logger::instance().error(msg)

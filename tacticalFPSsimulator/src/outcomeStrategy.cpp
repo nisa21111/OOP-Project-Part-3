@@ -6,7 +6,7 @@ static unsigned seed() {
         std::chrono::steady_clock::now().time_since_epoch().count());
 }
 
-// ─── Aggressive ───────────────────────────────────────────────────────────────
+// agro
 
 AggressiveStrategy::AggressiveStrategy() : rng_(seed()) {}
 
@@ -17,7 +17,7 @@ bool AggressiveStrategy::resolve(int teamCoordination, int mapControl) const {
 
 std::string AggressiveStrategy::name() const { return "Aggressive"; }
 
-// ─── Coordinated ─────────────────────────────────────────────────────────────
+// coord (nu s-a intamplat vreodata intr-un meci adv de valo fmm)
 
 CoordinatedStrategy::CoordinatedStrategy() : rng_(seed() + 1) {}
 
@@ -28,7 +28,7 @@ bool CoordinatedStrategy::resolve(int teamCoordination, int mapControl) const {
 
 std::string CoordinatedStrategy::name() const { return "Coordinated"; }
 
-// ─── Balanced ─────────────────────────────────────────────────────────────────
+// balanced
 
 BalancedStrategy::BalancedStrategy() : rng_(seed() + 2) {}
 

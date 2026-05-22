@@ -8,13 +8,11 @@
 #include <concepts>
 #include <memory>
 
-// C++20 concept: orice tip cu metoda id() care returneaza string
 template<typename T>
 concept Identifiable = requires(T t) {
     { t.id() } -> std::convertible_to<std::string>;
 };
 
-// C++20 concept: orice tip cu metoda display()
 template<typename T>
 concept Displayable = requires(T t) {
     { t.display() } -> std::same_as<void>;
@@ -25,7 +23,6 @@ class Repository {
     std::unordered_map<std::string, std::shared_ptr<T>> store_;
 
 public:
-    // Corectat: Transmitem prin copie curata de shared_ptr, nu prin move agresiv
     void add(const std::string& key, std::shared_ptr<T> value) {
         if (value != nullptr) {
             store_[key] = value;
@@ -69,13 +66,11 @@ public:
         for (auto& [k, v] : store_) fn(k, v);
     }
 
-    // Disponibil doar daca T e Displayable (C++20 requires)
     void displayAll() const requires Displayable<T> {
         for (auto& [k, v] : store_) v->display();
     }
 };
 
-// Specializare partiala: Repository<std::vector<T>> — coada de evenimente per cheie
 template<typename T>
 class Repository<std::vector<T>> {
     std::unordered_map<std::string, std::vector<T>> store_;
@@ -95,7 +90,6 @@ public:
     void clear(const std::string& key) { store_.erase(key); }
 };
 
-// Functii template libere (utilizate efectiv in logica jocului)
 template<typename T>
 [[nodiscard]] std::optional<std::shared_ptr<T>> findIf(
     const Repository<T>& repo,
