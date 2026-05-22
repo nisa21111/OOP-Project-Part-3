@@ -28,6 +28,12 @@
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\outcomeStrategy.cpp" />
     <ClCompile Include="src\scenarioNode.cpp" />
+    <ClCompile Include="src\ui\application.cpp" />
+    <ClCompile Include="src\ui\assetManager.cpp" />
+    <ClCompile Include="src\ui\gameScreen.cpp" />
+    <ClCompile Include="src\ui\mainMenuScreen.cpp" />
+    <ClCompile Include="src\ui\statsScreen.cpp" />
+    <ClCompile Include="src\ui\widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\agent.h" />
@@ -42,6 +48,13 @@
     <ClInclude Include="headers\outcomeStrategy.h" />
     <ClInclude Include="headers\repository.h" />
     <ClInclude Include="headers\scenarioNode.h" />
+    <ClInclude Include="headers\ui\application.h" />
+    <ClInclude Include="headers\ui\assetManager.h" />
+    <ClInclude Include="headers\ui\gameScreen.h" />
+    <ClInclude Include="headers\ui\mainMenuScreen.h" />
+    <ClInclude Include="headers\ui\screen.h" />
+    <ClInclude Include="headers\ui\statsScreen.h" />
+    <ClInclude Include="headers\ui\widgets.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -144,7 +157,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
