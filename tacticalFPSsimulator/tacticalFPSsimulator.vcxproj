@@ -22,11 +22,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\agent.cpp" />
     <ClCompile Include="src\agentFactory.cpp" />
+    <ClCompile Include="src\command.cpp" />
+    <ClCompile Include="src\configManager.cpp" />
     <ClCompile Include="src\gameMap.cpp" />
     <ClCompile Include="src\gameSession.cpp" />
-    <ClCompile Include="src\gameStats.cpp" />
     <ClCompile Include="src\logger.cpp" />
     <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\outcomeStrategy.cpp" />
+    <ClCompile Include="src\scenarioNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\agent.h" />

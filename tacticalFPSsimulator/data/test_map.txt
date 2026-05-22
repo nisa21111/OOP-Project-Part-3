@@ -1,0 +1,23 @@
+# =========================
+# TEST MAP - SIMPLE FLOW
+# =========================
+
+START spawn
+
+NODE spawn start "You spawn on Ascent attacker side."
+NODE mid mid "You push mid and hear enemy footsteps."
+NODE a_site a "You go A site and prepare the push."
+NODE win win "You win the round!"
+NODE lose lose "You lose the round..."
+
+CHOICE spawn a "Push A site" a_site
+CHOICE spawn b "Go mid" mid
+
+CHOICE mid a "Commit to fight" win
+CHOICE mid b "Rotate back" lose
+
+CHOICE a_site a "Execute site" win
+CHOICE a_site b "Fall back" lose
+
+TERMINAL win win
+TERMINAL lose lose
