@@ -10,6 +10,8 @@ Button::Button(const sf::Font& font, const std::string& text,
     , actionKey_(key)
 {
     shape_.setSize(size);
+    if (text.size() > 28) label_.setCharacterSize(17);
+    else if (text.size() > 20) label_.setCharacterSize(17);
     shape_.setPosition(pos);
     shape_.setOutlineThickness(2.f);
 
@@ -22,6 +24,7 @@ Button::Button(const sf::Font& font, const std::string& text,
     keyHint_.setPosition({ pos.x + 8.f, pos.y + 5.f });
 
     refreshColors();
+    setPosition(pos);
 }
 
 void Button::refreshColors() {

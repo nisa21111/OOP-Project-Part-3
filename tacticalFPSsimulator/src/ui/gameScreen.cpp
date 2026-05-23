@@ -18,8 +18,9 @@ GameScreen::GameScreen(sf::Vector2u windowSize,
         { 20.f, static_cast<float>(windowSize.y) - 280.f }, { 220.f, 260.f })
     , narrativePanel_(
         *AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"),
-        { 260.f, static_cast<float>(windowSize.y) - 280.f },
-        { static_cast<float>(windowSize.x) - 280.f, 100.f }, 18)
+        { 20.f, 60.f },
+        { static_cast<float>(windowSize.x) - 40.f, 160.f }, 18)
+
     , mapNameText_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"), "", 22)
     , coordText_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"), "TEAM COORD", 12)
     , controlText_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"), "MAP CTRL", 12)
@@ -131,10 +132,13 @@ void GameScreen::buildChoiceButtons() {
     float H = static_cast<float>(winSize_.y);
     float btnW = 320.f;
     float btnH = 52.f;
-    float gap = 14.f;
+    float gap = 12.f;
+
     float totalH = currentNode_->choices().size() * (btnH + gap) - gap;
-    float startY = H - totalH - 30.f;
-    float startX = W / 2.f - btnW / 2.f;
+
+    float startY = H - totalH - 20.f;
+
+    float startX = W - btnW - 30.f;
 
     for (size_t i = 0; i < currentNode_->choices().size(); ++i) {
         const auto& c = currentNode_->choices()[i];

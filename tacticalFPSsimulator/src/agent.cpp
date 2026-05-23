@@ -27,7 +27,7 @@ std::string Brimstone::callout(const std::string& situation) const {
     if (situation == "spike_dropped")
         return "Spike's been dropped! Somebody pick that up NOW!";
     if (situation == "rotate")
-        return "We're losing this site — rotate mid, let's go!";
+        return "We're losing this site - rotate mid, let's go!";
     if (situation == "team_ignored")
         return "...They didn't listen. Classic.";
     if (situation == "win")
@@ -75,7 +75,7 @@ std::string Sage::roleStr() const { return "Sentinel"; }
 
 std::string Sage::callout(const std::string& situation) const {
     if (situation == "start")         return "I'll hold flank. Be safe, everyone.";
-    if (situation == "spike_dropped") return "I can res — but someone plant first!";
+    if (situation == "spike_dropped") return "I can res - but someone plant first!";
     if (situation == "rotate")        return "Walling off the flank, then rotating.";
     if (situation == "team_ignored")  return "...I'll pray for them.";
     if (situation == "win")           return "Healing done. Victory achieved.";
