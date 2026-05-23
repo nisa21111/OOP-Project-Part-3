@@ -6,7 +6,7 @@ static unsigned seed() {
         std::chrono::steady_clock::now().time_since_epoch().count());
 }
 
-// agro
+//agro
 
 AggressiveStrategy::AggressiveStrategy() : rng_(seed()) {}
 

@@ -1,5 +1,4 @@
 #pragma once
-#include <cstdint> 
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <functional>
@@ -23,10 +22,11 @@ namespace Theme {
 class Button {
     sf::RectangleShape shape_;
     sf::Text           label_;
-    sf::Text           keyHint_;
+    sf::Text           keyHint_; 
     bool               hovered_ = false;
     bool               pressed_ = false;
     bool               disabled_ = false;
+    bool               selected_ = false;
     std::string        actionKey_;
 
     void refreshColors();
@@ -38,6 +38,7 @@ public:
     void setPosition(sf::Vector2f pos);
     void setSize(sf::Vector2f size);
     void setDisabled(bool d);
+    void setSelected(bool s);
 
     bool handleEvent(const sf::Event& event);
     void draw(sf::RenderWindow& window) const;
@@ -45,6 +46,7 @@ public:
     [[nodiscard]] bool      isHovered()  const { return hovered_; }
     [[nodiscard]] const std::string& key() const { return actionKey_; }
 };
+
 
 class TextPanel {
     sf::RectangleShape background_;
@@ -62,15 +64,18 @@ public:
     void draw(sf::RenderWindow& window) const;
 };
 
+
 class AgentPortrait {
-    std::unique_ptr<sf::Sprite> portrait_; 
-    sf::RectangleShape         bubble_;
-    sf::Text                   speechText_;
-    sf::Text                   nameText_;
-    sf::RectangleShape         nameBar_;
+    std::optional<sf::Sprite> portrait_; 
+    sf::RectangleShape        bubble_;
+    sf::Text                  speechText_;
+    sf::Text                  nameText_;
+    sf::RectangleShape        nameBar_;
 
     std::shared_ptr<sf::Texture> texture_;
-    bool textureLoaded_ = false;
+
+    sf::Vector2f pos_;
+    sf::Vector2f portraitSize_;
 
     float slideOffset_ = 300.f;
     bool  animating_ = true;
@@ -87,14 +92,14 @@ public:
 };
 
 class BackgroundLayer {
-    std::unique_ptr<sf::Sprite>   sprite_;
-    sf::RectangleShape            vignette_;
-    sf::RectangleShape            overlay_;
-    std::shared_ptr<sf::Texture>  texture_;
+    std::optional<sf::Sprite> sprite_;
+    sf::RectangleShape        vignette_;
+    sf::RectangleShape        overlay_;
+    std::shared_ptr<sf::Texture> texture_;
 
 public:
     BackgroundLayer();
     void loadTexture(std::shared_ptr<sf::Texture> tex, sf::Vector2u windowSize);
-    void setOverlayAlpha(std::uint8_t alpha); 
+    void setOverlayAlpha(std::uint8_t alpha);
     void draw(sf::RenderWindow& window) const;
 };

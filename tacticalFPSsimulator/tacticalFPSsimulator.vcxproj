@@ -42,7 +42,6 @@
     <ClInclude Include="headers\configManager.h" />
     <ClInclude Include="headers\exceptions.h" />
     <ClInclude Include="headers\gameMap.h" />
-    <ClInclude Include="headers\gamesStats.h" />
     <ClInclude Include="headers\logger.h" />
     <ClInclude Include="headers\observer.h" />
     <ClInclude Include="headers\outcomeStrategy.h" />

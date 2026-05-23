@@ -21,7 +21,6 @@ public:
 
     std::shared_ptr<sf::Texture> getTexture(const std::string& path);
 
-    // Returneaza font
     std::shared_ptr<sf::Font> getFont(const std::string& path);
 
     std::shared_ptr<sf::Texture> getPlaceholder(const std::string& label,

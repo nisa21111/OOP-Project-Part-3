@@ -80,9 +80,6 @@
     <ClInclude Include="headers\gameMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="headers\gamesStats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="headers\logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>

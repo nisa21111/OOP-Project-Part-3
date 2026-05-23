@@ -1,6 +1,7 @@
 #include "ui/assetManager.h"
 #include "logger.h"
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 
 AssetManager& AssetManager::instance() {
     static AssetManager inst;
@@ -12,6 +13,8 @@ std::shared_ptr<sf::Texture> AssetManager::getTexture(const std::string& path) {
     if (it != textures_.end()) return it->second;
 
     auto tex = std::make_shared<sf::Texture>();
+
+
     if (!tex->loadFromFile(path)) {
         LOG_WARN("Textura negasita: " + path + " — folosesc placeholder");
         return getPlaceholder(path, 256, 256, sf::Color(80, 80, 80));
@@ -19,25 +22,21 @@ std::shared_ptr<sf::Texture> AssetManager::getTexture(const std::string& path) {
 
     textures_[path] = tex;
     LOG_INFO("Loaded texture: " + path);
-    return tex; // REPARAT: Lipsea return-ul pentru cazul în care textura se încarcă cu succes!
+    return tex;
 }
 
 std::shared_ptr<sf::Font> AssetManager::getFont(const std::string& path) {
     auto it = fonts_.find(path);
     if (it != fonts_.end()) return it->second;
 
-    // REPARAT: Pentru SFML 3, alocăm fontul într-un mod stabil în heap 
-    // și nu îl mai mutăm deloc pentru a nu-i rupe stream-ul de pe disk.
     auto font = std::make_shared<sf::Font>();
+
     if (!font->openFromFile(path)) {
-        LOG_ERROR("Font negasit sau corupt: " + path);
+        LOG_ERROR("Font negasit: " + path);
         return nullptr;
     }
 
-    textures_.reserve(textures_.size() + 2); // Prevenim rehash-ul intern al containerului
     fonts_[path] = font;
-
-    LOG_INFO("Loaded font: " + path);
     return font;
 }
 
@@ -49,6 +48,7 @@ std::shared_ptr<sf::Texture> AssetManager::getPlaceholder(const std::string& lab
     if (it != textures_.end()) return it->second;
 
     sf::Image img({ w, h }, color);
+
     for (unsigned int x = 0; x < w; ++x) {
         img.setPixel({ x, 0 }, sf::Color::White);
         img.setPixel({ x, h - 1 }, sf::Color::White);
@@ -58,12 +58,22 @@ std::shared_ptr<sf::Texture> AssetManager::getPlaceholder(const std::string& lab
         img.setPixel({ w - 1, y }, sf::Color::White);
     }
     for (unsigned int i = 0; i < std::min(w, h); ++i) {
-        img.setPixel({ i, i }, sf::Color(200, 200, 200, 120));
+        img.setPixel({ i,         i }, sf::Color(200, 200, 200, 120));
         img.setPixel({ w - 1 - i, i }, sf::Color(200, 200, 200, 120));
     }
 
     auto tex = std::make_shared<sf::Texture>();
-    tex->loadFromImage(img);
+    if (!tex->loadFromImage(img)) {
+        LOG_ERROR("Nu pot crea placeholder texture pentru: " + label);
+
+        auto tinyTex = std::make_shared<sf::Texture>();
+        if (tinyTex->loadFromImage(sf::Image({ 1, 1 }, color))) {
+            textures_[key] = tinyTex;
+            return tinyTex;
+        }
+        return nullptr;
+    }
+
     textures_[key] = tex;
     return tex;
 }

@@ -11,22 +11,21 @@ MainMenuScreen::MainMenuScreen(sf::Vector2u windowSize,
     , mapIds_(availableMaps)
     , agentIds_(availableAgents)
     , stratIds_(STRAT_IDS)
-    , font_(AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf") ?
-        AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf") :
-        AssetManager::instance().getFont("data/fonts/font.ttf"))
-    , titleText_(*font_, "", 42) 
-    , subtitleText_(*font_, "", 18) 
-    , mapLabel_(*font_, "", 22) 
-    , agentLabel_(*font_, "", 22) 
-    , stratLabel_(*font_, "", 22)
+    , titleText_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"))
+    , subtitleText_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"))
+    , mapLabel_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"))
+    , agentLabel_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"))
+    , stratLabel_(*AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf"))
 {
+    font_ = AssetManager::instance().getFont("data/fonts/Rajdhani-Bold.ttf");
+    if (!font_) font_ = AssetManager::instance().getFont("data/fonts/font.ttf");
+
     auto bgTex = AssetManager::instance().getTexture("data/images/menu_bg.png");
     background_.loadTexture(bgTex, winSize_);
     background_.setOverlayAlpha(150);
 
     buildLayout();
 }
-
 void MainMenuScreen::buildLayout() {
     float W = static_cast<float>(winSize_.x);
     float H = static_cast<float>(winSize_.y);
@@ -35,20 +34,28 @@ void MainMenuScreen::buildLayout() {
     titleBar_.setFillColor(sf::Color(10, 10, 15, 220));
     titleBar_.setPosition({ 0.f, 0.f });
 
-    titleText_ = sf::Text(*font_, "TACTICAL FPS SIMULATOR", 42);
+    titleText_.setString("TACTICAL FPS SIMULATOR");
+    titleText_.setCharacterSize(42);
+    if (font_) titleText_.setFont(*font_);
     titleText_.setFillColor(Theme::AccentRed);
     titleText_.setStyle(sf::Text::Bold);
+    
     sf::FloatRect tb = titleText_.getLocalBounds();
     titleText_.setOrigin({ tb.position.x + tb.size.x / 2.f, tb.position.y });
     titleText_.setPosition({ W / 2.f, 14.f });
 
-    subtitleText_ = sf::Text(*font_, "VALORANT CHOOSE-YOUR-OWN-STORY", 18);
+    subtitleText_.setString("VALORANT CHOOSE-YOUR-OWN-STORY");
+    subtitleText_.setCharacterSize(18);
+    if (font_) subtitleText_.setFont(*font_);
     subtitleText_.setFillColor(Theme::TextSecondary);
+    
     sf::FloatRect sb = subtitleText_.getLocalBounds();
     subtitleText_.setOrigin({ sb.position.x + sb.size.x / 2.f, sb.position.y });
     subtitleText_.setPosition({ W / 2.f, 58.f });
 
-    mapLabel_ = sf::Text(*font_, "SELECT MAP", 22);
+    mapLabel_.setString("SELECT MAP");
+    mapLabel_.setCharacterSize(22);
+    if (font_) mapLabel_.setFont(*font_);
     mapLabel_.setFillColor(Theme::AccentGold);
     mapLabel_.setPosition({ 60.f, 120.f });
 
@@ -61,7 +68,9 @@ void MainMenuScreen::buildLayout() {
             sf::Vector2f(180.f, 50.f));
     }
 
-    agentLabel_ = sf::Text(*font_, "SELECT AGENT", 22);
+    agentLabel_.setString("SELECT AGENT");
+    agentLabel_.setCharacterSize(22);
+    if (font_) agentLabel_.setFont(*font_);
     agentLabel_.setFillColor(Theme::AccentGold);
     agentLabel_.setPosition({ 60.f, 240.f });
 
@@ -74,7 +83,9 @@ void MainMenuScreen::buildLayout() {
             sf::Vector2f(180.f, 50.f));
     }
 
-    stratLabel_ = sf::Text(*font_, "SELECT STRATEGY", 22);
+    stratLabel_.setString("SELECT STRATEGY");
+    stratLabel_.setCharacterSize(22);
+    if (font_) stratLabel_.setFont(*font_);
     stratLabel_.setFillColor(Theme::AccentGold);
     stratLabel_.setPosition({ 60.f, 360.f });
 
@@ -97,11 +108,11 @@ void MainMenuScreen::buildLayout() {
 
 void MainMenuScreen::updateSelectionVisuals() {
     for (size_t i = 0; i < mapButtons_.size(); ++i)
-        mapButtons_[i].setDisabled(static_cast<int>(i) != selectedMap_);
+        mapButtons_[i].setSelected(static_cast<int>(i) == selectedMap_);
     for (size_t i = 0; i < agentButtons_.size(); ++i)
-        agentButtons_[i].setDisabled(static_cast<int>(i) != selectedAgent_);
+        agentButtons_[i].setSelected(static_cast<int>(i) == selectedAgent_);
     for (size_t i = 0; i < stratButtons_.size(); ++i)
-        stratButtons_[i].setDisabled(static_cast<int>(i) != selectedStrat_);
+        stratButtons_[i].setSelected(static_cast<int>(i) == selectedStrat_);
 }
 
 void MainMenuScreen::onEnter(const std::string&) {
