@@ -31,7 +31,5 @@ public:
     [[nodiscard]] const std::string& defaultBackground() const { return defaultBackground_; }
 
     [[nodiscard]] std::shared_ptr<ScenarioNode> getNode(const std::string& id) const;
-    [[nodiscard]] bool                          hasNode(const std::string& id) const;
-
     static GameMap loadFromFile(const std::string& path);
 };

@@ -28,13 +28,3 @@ public:
     void undo()    override;
     std::string description() const override;
 };
-
-class CommandHistory {
-    std::stack<std::unique_ptr<ICommand>> history_;
-
-public:
-    void execute(std::unique_ptr<ICommand> cmd);
-    bool canUndo() const;
-    void undo();
-    void clear();
-};

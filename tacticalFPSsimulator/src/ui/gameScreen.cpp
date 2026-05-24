@@ -77,6 +77,9 @@ GameScreen::GameScreen(sf::Vector2u windowSize,
 }
 
 void GameScreen::onEnter(const std::string&) {
+    showingTerminal_ = false;
+    terminalButtons_.clear();
+
     result_ = { ScreenStatus::Running, "", "" };
     roundResult_ = {};
     roundResult_.agentId = agent_->name();
@@ -99,6 +102,22 @@ void GameScreen::refreshBackground(const std::string& bgPath) {
     background_.loadTexture(tex, winSize_);
 }
 
+void GameScreen::buildTerminalButtons() {
+    terminalButtons_.clear();
+    float W = static_cast<float>(winSize_.x);
+    float H = static_cast<float>(winSize_.y);
+    float btnW = 240.f;
+    float btnH = 52.f;
+    float gap = 20.f;
+    float totalW = 3 * btnW + 2 * gap;
+    float startX = W / 2.f - totalW / 2.f;
+    float Y = H - 100.f;
+
+    terminalButtons_.emplace_back(*font_, "SEE STATS", "S", sf::Vector2f(startX, Y), sf::Vector2f(btnW, btnH));
+    terminalButtons_.emplace_back(*font_, "PLAY AGAIN", "R", sf::Vector2f(startX + btnW + gap, Y), sf::Vector2f(btnW, btnH));
+    terminalButtons_.emplace_back(*font_, "MAIN MENU", "M", sf::Vector2f(startX + 2 * (btnW + gap), Y), sf::Vector2f(btnW, btnH));
+}
+
 void GameScreen::loadNode(const std::shared_ptr<ScenarioNode>& node) {
     currentNode_ = node;
 
@@ -117,8 +136,8 @@ void GameScreen::loadNode(const std::shared_ptr<ScenarioNode>& node) {
         roundResult_.won = node->isWin();
         roundResult_.teamCoord = teamCoordination_;
         roundResult_.mapControl = mapControl_;
-        pendingExit_ = true;
-        fadeAlpha_ = 0.f;
+        showingTerminal_ = true;
+        buildTerminalButtons();
     }
 
     LOG_INFO("GameScreen loaded node: " + node->id());
@@ -160,16 +179,27 @@ void GameScreen::updateHUD() {
 }
 
 void GameScreen::applyEventEffect(const std::string& eventType) {
+    int penalty = 2;
+    int bonus = 1;
+    if (strategy_->name() == "Aggressive") {
+        penalty = 1;
+        bonus = 2;
+    }
+    else if (strategy_->name() == "Coordinated") {
+        penalty = 3;
+        bonus = 1;
+    }
+
     if (eventType == "SPIKE_DROPPED") {
-        mapControl_ = std::max(0, mapControl_ - 2);
+        mapControl_ = std::max(0, mapControl_ - penalty);
         eventBus_->notify({ "SPIKE_DROPPED", "Spike dropped mid-round" });
     }
     else if (eventType == "TEAM_IGNORED") {
-        teamCoordination_ = std::max(0, teamCoordination_ - 1);
+        teamCoordination_ = std::max(0, teamCoordination_ - penalty);
         eventBus_->notify({ "TEAM_IGNORED", "Team didn't follow the call" });
     }
     else if (eventType == "ROTATE") {
-        mapControl_ = std::min(10, mapControl_ + 1);
+        mapControl_ = std::min(10, mapControl_ + bonus);
         eventBus_->notify({ "ROTATE", "Mid-round rotation" });
     }
     updateHUD();
@@ -197,19 +227,45 @@ void GameScreen::handleEvent(const sf::Event& event) {
         }
         if (!currentNode_->isTerminal()) {
             for (auto& c : currentNode_->choices()) {
-                bool match = false;
-                if (c.key == "a" && kp->code == sf::Keyboard::Key::A) match = true;
-                if (c.key == "b" && kp->code == sf::Keyboard::Key::B) match = true;
-                if (c.key == "c" && kp->code == sf::Keyboard::Key::C) match = true;
-                if (c.key == "m" && kp->code == sf::Keyboard::Key::M) match = true;
-                if (match) {
-                    if (c.eventTrigger) applyEventEffect(*c.eventTrigger);
-                    startFadeToNode(c.nextNodeId);
-                    LOG_INFO("Keyboard choice: " + c.key + " -> " + c.nextNodeId);
-                    return;
+                if (c.key.size() == 1) {
+                    int keyIndex = static_cast<int>(kp->code)
+                        - static_cast<int>(sf::Keyboard::Key::A);
+                    char keyChar = 'a' + keyIndex;
+                    if (keyIndex >= 0 && keyIndex < 26 && c.key[0] == keyChar) {
+                        if (c.eventTrigger) applyEventEffect(*c.eventTrigger);
+                        startFadeToNode(c.nextNodeId);
+                        return;
+                    }
                 }
             }
         }
+    }
+    if (showingTerminal_) {
+
+        if (terminalButtons_[0].handleEvent(event)) {
+            startFadeToExit();
+            return;
+        }
+        if (terminalButtons_[1].handleEvent(event)) {
+            result_ = { ScreenStatus::ReplaceScreen, "game_same", "" };
+            return;
+        }
+        if (terminalButtons_[2].handleEvent(event)) {
+            result_ = { ScreenStatus::ReplaceScreen, "menu", "" };
+            return;
+        }
+        if (const auto* kp = event.getIf<sf::Event::KeyPressed>()) {
+            if (kp->code == sf::Keyboard::Key::S) { startFadeToExit(); return; }
+            if (kp->code == sf::Keyboard::Key::R) {
+                result_ = { ScreenStatus::ReplaceScreen, "game_same", "" };
+                return;
+            }
+            if (kp->code == sf::Keyboard::Key::M) {
+                result_ = { ScreenStatus::ReplaceScreen, "menu", "" };
+                return;
+            }
+        }
+        return;
     }
 
     if (!currentNode_->isTerminal()) {
@@ -281,11 +337,6 @@ void GameScreen::update(sf::Time dt) {
         fadeAlpha_ = std::max(fadeAlpha_ - FADE_SPEED * dt.asSeconds(), 0.f);
         fadeOverlay_.setFillColor(sf::Color(0, 0, 0, static_cast<std::uint8_t>(fadeAlpha_)));
     }
-
-    if (currentNode_ && currentNode_->isTerminal() && !fadingOut_ && fadeAlpha_ == 0.f
-        && result_.status == ScreenStatus::Running) {
-        startFadeToExit();
-    }
 }
 
 void GameScreen::draw(sf::RenderWindow& window) {
@@ -295,6 +346,10 @@ void GameScreen::draw(sf::RenderWindow& window) {
     portrait_.draw(window);
 
     for (auto& b : choiceButtons_) b.draw(window);
+
+    if (showingTerminal_) {
+        for (auto& b : terminalButtons_) b.draw(window);
+    }
 
     window.draw(hudBar_);
     window.draw(mapNameText_);

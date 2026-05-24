@@ -8,10 +8,6 @@ Agent::Agent(std::string name, AgentRole role, std::string portraitPath)
 {
 }
 
-void Agent::display() const {
-    std::cout << "  [ " << name_ << " | " << roleStr() << " ]\n";
-}
-
 // brimmy
 
 Brimstone::Brimstone()
@@ -98,7 +94,7 @@ std::string Sova::roleStr() const { return "Initiator"; }
 
 std::string Sova::callout(const std::string& situation) const {
     if (situation == "start")         return "Dart first, then we push. Trust the info.";
-    if (situation == "spike_dropped") return "Scanning for spike location...";
+    if (situation == "spike_dropped") return "Scanning for enemy location...";
     if (situation == "rotate")        return "I have info on mid. Rotate now.";
     if (situation == "team_ignored")  return "My dart showed nothing there. Nobody listened.";
     if (situation == "win")           return "Information wins games. Proved it again.";

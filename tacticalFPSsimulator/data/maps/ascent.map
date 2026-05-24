@@ -1,80 +1,87 @@
-# Harta: Ascent — Spike Rush (Attacker side)
-# Format: NODE id calloutKey "narrative"
-#         CHOICE nodeId key "label" nextId [EVENT]
-#         BG nodeId data/images/ascent_asite.png
-#         TERMINAL nodeId win|lose
-#         START nodeId
-#         MAPBG data/images/ascent.png
+# Harta: Ascent (Attacker side)
 
-MAPBG data/images/ascent.png
+MAPBG data/images/ascent_spawn.png
 START spawn
 
-# ── Spawn ──────────────────────────────────────────────────────────────────────
-NODE spawn start "Attacker spawn on Ascent. The team needs a plan NOW. Where do you go?"
-CHOICE spawn a "Push A main with full team" a_main
+NODE spawn start "Attacker spawn on Ascent. You need to attack a site and plant. Where does the team push?"
+BG spawn data/images/ascent_spawn.png
+CHOICE spawn a "Push A site through main" a_main
 CHOICE spawn b "Fast rush B through market" b_rush
-CHOICE spawn m "Contest mid and split map" mid_control ROTATE
+CHOICE spawn m "Contest mid control first" mid_control ROTATE
 
-# ── A site push ────────────────────────────────────────────────────────────────
 NODE a_main start "You head toward A main. Halfway through, Jett gets picked off by an Operator lurking in A lobby."
+BG a_main data/images/ascent_a.png
 CHOICE a_main p "Push through the gap - rush site" a_rush
 CHOICE a_main r "Fall back and rotate to B" b_from_mid TEAM_IGNORED
 
-NODE a_rush spike_dropped "You push through A main. The spike carrier goes in front and gets picked off by an operator. Spike down in enemy territory."
+NODE a_rush spike_dropped "You push through A main. The spike carrier goes in front and gets taken out by an operator. Spike dropped in enemy territory."
+BG a_rush data/images/ascent_a.png
 CHOICE a_rush g "Grab the spike yourself and entry" a_plant SPIKE_DROPPED
-CHOICE a_rush s "Stall for time - spam through smoke and wait" a_smoke
+CHOICE a_rush s "Wait for team to smoke and entry." a_smoke
 
 NODE a_plant win "You grab the spike mid-fight, dodge two bullets, and plant it on A default. Flawless under pressure."
+BG a_plant data/images/ascent_a.png
 TERMINAL a_plant win
 
-NODE a_smoke start "Brimstone smokes off both defender angles. The team walks in unchallenged and plants comfortably."
-CHOICE a_smoke w "Wait for defuse - hold the plant" a_win
-CHOICE a_smoke r "Rotate mid in case of flank" mid_rotate
+NODE a_smoke start "Omen smokes off both defender angles. The team walks in unchallenged and plants comfortably."
+BG a_smoke data/images/ascent_a.png
+CHOICE a_smoke w "Hold the plant - wait for defuse attempt" a_win
+CHOICE a_smoke r "One person rotates mid to watch flank" mid_rotate
 
-NODE a_win win "Defenders try to push through the smoke to defuse but get cleaned up. Round won on A site."
+NODE a_win win "Defenders try to push through smoke to defuse but get cleaned up. Round won on A site."
+BG a_win data/images/ascent_a.png
 TERMINAL a_win win
 
-# ── B site rush ────────────────────────────────────────────────────────────────
-NODE b_rush start "Full B rush. Your team charges through market. A Sage wall goes up from the defenders - split the team!"
-CHOICE b_rush j "Ask Jett to jump over it." b_over
+NODE b_rush start "Full B rush. Your team charges through market. A Sage wall goes up from the defenders - team split!"
+BG b_rush data/images/ascent_b.png
+CHOICE b_rush j "Jett dashes over the wall" b_over
 CHOICE b_rush w "Wait for the wall to break" b_wait TEAM_IGNORED
-CHOICE b_rush m "One person holds market, rest rotate mid" mid_split ROTATE
+CHOICE b_rush m "Two hold market, rest rotate mid" mid_split ROTATE
 
-NODE b_over spike_dropped "Jett flies over the Sage wall - but she's 1v2 on site. She gets traded and drops the spike."
+NODE b_over spike_dropped "Jett dashes over the Sage wall but she is 1v2 on site. She gets traded and drops the spike."
+BG b_over data/images/ascent_b.png
 CHOICE b_over r "Rush in to pick up the spike" b_plant SPIKE_DROPPED
-CHOICE b_over f "Fall back - Sage wall still up" b_wait
+CHOICE b_over f "Hold outside - wait for wall to break" b_wait
 
-NODE b_plant win "You slam through the Sage wall, pick up the spike, and plant it in B default. Defenders are spread thin."
+NODE b_plant win "You push through the Sage wall, pick up the spike, and plant it in B default. Defenders are spread thin."
+BG b_plant data/images/ascent_b.png
 TERMINAL b_plant win
 
-NODE b_wait team_ignored "Half the team waits outside market while 2 defenders reinforce B site. Sage ults. You're outnumbered."
+NODE b_wait team_ignored "Half the team waits outside market while 2 defenders reinforce B site. You are outnumbered."
+BG b_wait data/images/ascent_b.png
 CHOICE b_wait c "Commit anyway - all-in B" b_commit
 CHOICE b_wait r "Rotate mid - try to take A" mid_rotate
 
-NODE b_commit lose "The push is too disorganized. Three players trade for nothing. Defenders retake and defuse. Round lost."
+NODE b_commit lose "The push is disorganized. Three players trade for nothing. Defenders retake. Round lost."
+BG b_commit data/images/ascent_b.png
 TERMINAL b_commit lose
 
 NODE mid_split start "Your team splits: 2 go B market, 3 contest mid. Mid is secured - B link is now open."
+BG mid_split data/images/ascent_mid.png
 CHOICE mid_split b "Full execute B through link" b_plant
 CHOICE mid_split a "Rotate A with mid advantage" a_smoke
 
-# ── Mid control ────────────────────────────────────────────────────────────────
-NODE mid_control rotate "You take mid control first. Sova's dart reveals 2 defenders rotating from B to A. Perfect info."
+NODE mid_control rotate "You take mid control. Sova dart reveals 2 defenders rotating from B to A. Perfect info."
+BG mid_control data/images/ascent_mid.png
 CHOICE mid_control a "Hit A while defenders are rotating" a_smoke
-CHOICE mid_control b "Hit B while it's undermanned" b_plant
+CHOICE mid_control b "Hit B while it is undermanned" b_plant
 CHOICE mid_control s "Hold mid and split defenders further" mid_hold
 
-NODE mid_hold start "You hold mid and deny the defenders from rotating. They're frozen - too scared to leave their sites."
+NODE mid_hold start "You hold mid and deny rotations. Defenders are confused and hold their sites."
+BG mid_hold data/images/ascent_mid.png
 CHOICE mid_hold a "Break toward A through mid" a_win
 CHOICE mid_hold b "Break toward B through mid" b_plant
 
-NODE mid_rotate rotate "You rotate through mid with 3 players. A site has only 1 defender holding. Clean execute incoming."
+NODE mid_rotate rotate "You rotate through mid with 3 players. A site has only 1 defender. Clean execute incoming."
+BG mid_rotate data/images/ascent_mid.png
 CHOICE mid_rotate a "Full A execute - 3v1" a_win
-CHOICE mid_rotate s "Set up post-plant from mid" a_win
+CHOICE mid_rotate s "Set up post-plant smokes from mid" a_win
 
-NODE b_from_mid team_ignored "You try to rotate to B through mid, but 2 teammates refuse to follow and push A anyway. Chaos."
-CHOICE b_from_mid f "Follow your teammates to A - commit" a_rush
+NODE b_from_mid team_ignored "You try to rotate to B through mid but 2 teammates push A anyway. Complete chaos."
+BG b_from_mid data/images/ascent_mid.png
+CHOICE b_from_mid f "Follow teammates to A - commit" a_rush
 CHOICE b_from_mid b "Solo rush B - take the 1v1" b_solo TEAM_IGNORED
 
 NODE b_solo lose "You hit B alone. The site has 2 defenders. No support comes. Round over."
+BG b_solo data/images/ascent_b.png
 TERMINAL b_solo lose

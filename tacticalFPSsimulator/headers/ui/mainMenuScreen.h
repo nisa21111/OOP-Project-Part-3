@@ -8,29 +8,33 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <optional>
 
 class MainMenuScreen : public Screen {
     sf::Vector2u              winSize_;
     BackgroundLayer           background_;
     std::shared_ptr<sf::Font> font_;
 
-    sf::Text titleText_;
-    sf::Text subtitleText_;
-    sf::RectangleShape titleBar_;
+    sf::Text    titleText_;
+    sf::Text    subtitleText_;
+    sf::RectangleShape         titleBar_;
 
-    sf::Text             mapLabel_;
-    std::vector<Button>  mapButtons_;
-    int                  selectedMap_ = 0;
+    sf::Text  mapLabel_;
+    std::vector<Button>      mapButtons_;
+    int                      selectedMap_ = 0;
 
-    sf::Text             agentLabel_;
-    std::vector<Button>  agentButtons_;
-    int                  selectedAgent_ = 0;
+    sf::Text  agentLabel_;
+    std::vector<Button>      agentButtons_;
+    int                      selectedAgent_ = 0;
 
-    sf::Text             stratLabel_;
-    std::vector<Button>  stratButtons_;
-    int                  selectedStrat_ = 0;
+    std::unique_ptr<TextPanel> agentInfoPanel_;
 
-    std::unique_ptr<Button> startButton_;
+    sf::Text  stratLabel_;
+    std::vector<Button>      stratButtons_;
+    int                      selectedStrat_ = 0;
+
+    std::unique_ptr<Button>  startButton_;
+    std::unique_ptr<Button>  quitButton_;
 
     std::vector<std::string> mapIds_;
     std::vector<std::string> agentIds_;
@@ -40,6 +44,7 @@ class MainMenuScreen : public Screen {
 
     void buildLayout();
     void updateSelectionVisuals();
+    void updateAgentInfo();
 
 public:
     MainMenuScreen(sf::Vector2u windowSize,

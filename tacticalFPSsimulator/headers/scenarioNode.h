@@ -40,5 +40,4 @@ public:
     [[nodiscard]] bool                       isTerminal()      const { return isTerminal_; }
     [[nodiscard]] bool                       isWin()           const { return isWin_; }
     [[nodiscard]] const std::string& backgroundImage() const { return backgroundImage_; }
-    [[nodiscard]] std::string                display_id()      const { return id_; }
 };

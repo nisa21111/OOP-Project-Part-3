@@ -28,7 +28,6 @@ public:
     virtual std::string callout(const std::string& situation) const = 0;
     virtual std::vector<std::string> abilities()             const = 0;
 
-    void display() const;
 };
 
 class Brimstone : public Agent {

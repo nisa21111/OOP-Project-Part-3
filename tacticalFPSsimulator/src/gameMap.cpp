@@ -23,16 +23,12 @@ std::shared_ptr<ScenarioNode> GameMap::getNode(const std::string& id) const {
     return it->second;
 }
 
-bool GameMap::hasNode(const std::string& id) const {
-    return nodes_.count(id) > 0;
-}
-
 GameMap GameMap::loadFromFile(const std::string& path) {
     std::ifstream file(path);
     if (!file.is_open()) throw ScenarioLoadException(path);
 
     std::string mapName = path;
-    auto slash = mapName.rfind('/');
+    auto slash = mapName.find_last_of("/\\");
     if (slash != std::string::npos) mapName = mapName.substr(slash + 1);
     auto dot = mapName.rfind('.');
     if (dot != std::string::npos) mapName = mapName.substr(0, dot);

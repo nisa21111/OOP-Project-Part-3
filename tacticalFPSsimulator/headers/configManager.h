@@ -25,5 +25,4 @@ public:
     [[nodiscard]] int  getInt(const std::string& key, int  def = 0)     const;
     [[nodiscard]] bool getBool(const std::string& key, bool def = false)  const;
 
-    void printAll() const;
 };

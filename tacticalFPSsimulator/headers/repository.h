@@ -62,13 +62,6 @@ public:
         return result;
     }
 
-    void forEach(const std::function<void(const std::string&, std::shared_ptr<T>)>& fn) const {
-        for (auto& [k, v] : store_) fn(k, v);
-    }
-
-    void displayAll() const requires Displayable<T> {
-        for (auto& [k, v] : store_) v->display();
-    }
 };
 
 template<typename T>

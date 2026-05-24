@@ -59,8 +59,3 @@ bool ConfigManager::getBool(const std::string& key, bool def) const {
     if (!v) return def;
     return *v == "true" || *v == "1" || *v == "yes";
 }
-
-void ConfigManager::printAll() const {
-    std::cout << "-- Config (" << configPath_ << ") --\n";
-    for (auto& [k, v] : config_) std::cout << "  " << k << " = " << v << "\n";
-}

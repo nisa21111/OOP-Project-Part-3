@@ -28,6 +28,8 @@ class GameScreen : public Screen {
     const Agent* agent_;
     std::unique_ptr<IOutcomeStrategy>   strategy_;
     std::shared_ptr<EventBus>           eventBus_;
+    std::vector<Button> terminalButtons_;
+    bool                showingTerminal_ = false;
 
     int teamCoordination_ = 5;
     int mapControl_ = 5;
@@ -76,6 +78,7 @@ public:
     void handleEvent(const sf::Event& event) override;
     void update(sf::Time dt) override;
     void draw(sf::RenderWindow& window) override;
+    void buildTerminalButtons();
     [[nodiscard]] ScreenResult result() const override { return result_; }
 
     [[nodiscard]] const RoundResult& roundResult() const { return roundResult_; }

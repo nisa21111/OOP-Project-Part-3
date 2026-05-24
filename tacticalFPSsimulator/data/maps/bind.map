@@ -1,49 +1,59 @@
-# Harta: Bind — Spike Rush (Attacker side)
-# Bind are teleporters — eventuri speciale
+# Harta: Bind - Spike Rush (Attacker side)
 
-MAPBG data/images/bind.png
+MAPBG data/images/bind_spawn.png
 START spawn
 
-NODE spawn start "Bind attacker spawn. No mid on this map - it's A or B, plus the teleporters. Where do you commit?"
+NODE spawn start "Bind attacker spawn. No mid on this map - A or B, plus the teleporters. Where do you commit?"
+BG spawn data/images/bind_spawn.png
 CHOICE spawn a "Push A through showers" a_showers
 CHOICE spawn b "Push B through hookah" b_hookah
-CHOICE spawn t "Use the B-to-A teleporter mid-round" teleport ROTATE
+CHOICE spawn t "Send one player through the teleporter" teleport ROTATE
 
-NODE a_showers start "A showers approach. Tight corridor - sova dart says a Raze lurks inside with a satchel ready."
-CHOICE a_showers f "Ask a teammate to flash into showers and push" a_flash
-CHOICE a_showers b "Push anyway" a_boost
+NODE a_showers start "A showers approach. Tight corridor - info says a Raze lurks inside with a satchel ready."
+BG a_showers data/images/bind_a.png
+CHOICE a_showers f "Breach flashes and team pushes" a_flash
+CHOICE a_showers b "Try to get the pick" a_boost
 CHOICE a_showers r "Rotate B - showers is too risky" b_hookah TEAM_IGNORED
 
-NODE a_flash start "Your Breach flashes showers perfectly. Enemies is blinded. Team pushes through uncontested."
+NODE a_flash start "Your Breach flashes showers perfectly. Raze is blinded. Team pushes through uncontested."
+BG a_flash data/images/bind_a.png
 CHOICE a_flash p "Straight rush to A default - plant fast" a_plant
-CHOICE a_flash s "Smoke off CT and set up slower" a_setup
+CHOICE a_flash s "Omen smokes CT and team sets up for post" a_setup
 
-NODE a_plant win "Fast plant under flash cover. Defenders can't get back in time through showers. Round won."
+NODE a_plant win "Fast plant under flash cover. Defenders cannot get back in time through showers. Round won."
+BG a_plant data/images/bind_a.png
 TERMINAL a_plant win
 
-NODE a_setup win "Controlled site take. Smokes cut off the CT angle. Clean plant. Defenders can't defuse safely."
+NODE a_setup win "Controlled site take. Smokes cut off the CT angle. Clean plant. Defenders cannot defuse safely."
+BG a_setup data/images/bind_a.png
 TERMINAL a_setup win
 
-NODE a_boost spike_dropped "You push and manage to take Raze out, but not before she manages to take one of your teammates down. Spike is down and reinforcements are coming from the enemies."
-CHOICE a_boost g "Make a run for it and grab it." a_plant SPIKE_DROPPED
-CHOICE a_boost l "Wait for your teammates." a_flash
+NODE a_boost spike_dropped "You and your teammate push Raze. She manages to get your teammate but you trade them. Your teammate had the spike, which is now dropped in showers with more enemies rushing to hold it."
+BG a_boost data/images/bind_a.png
+CHOICE a_boost g "Make a run for it" a_plant SPIKE_DROPPED
+CHOICE a_boost h "Hold outside and wait for another angle" a_flash
 
-NODE b_hookah start "B hookah approach. Enemy has a one-way smoke set on hookah. You can't see through it."
-CHOICE b_hookah t "Spray and pray through it." b_clear
-CHOICE b_hookah p "Peek aggressively through the one-way" b_peek TEAM_IGNORED
-CHOICE b_hookah r "Use teleporter - rotate to A" teleport ROTATE
+NODE b_hookah start "B hookah approach. Enemy has a one-way smoke set on hookah. You cannot see through it."
+BG b_hookah data/images/bind_b.png
+CHOICE b_hookah s "Omen smokes off hookah and team rushes" b_clear
+CHOICE b_hookah p "Peek aggressively through the smoke" b_peek TEAM_IGNORED
+CHOICE b_hookah r "Use the teleporter to rotate to A" teleport ROTATE
 
-NODE b_clear start "You don't get anyone but the defender is forced out. Your team rushes in cleanly."
+NODE b_clear start "Smokes block the hookah angle completely. Your team rushes B site clean with no info for defenders."
+BG b_clear data/images/bind_b.png
 CHOICE b_clear p "Plant on B default" b_plant
-CHOICE b_clear c "Plant on B corner position" b_plant
+CHOICE b_clear c "Plant on B corner near the box" b_plant
 
-NODE b_plant win "Clean B execute. Spike planted, enemies forced to push into your crossfire. Round won."
+NODE b_plant win "Clean B execute. Spike planted. Enemies forced to push into your crossfire. Round won."
+BG b_plant data/images/bind_b.png
 TERMINAL b_plant win
 
-NODE b_peek team_ignored "Your teammates don't follow the peek. You're alone on site. 2v1 retake destroys you."
+NODE b_peek team_ignored "Your teammates do not follow the peek. You are alone on site. 2v1 retake destroys you."
+BG b_peek data/images/bind_b.png
 TERMINAL b_peek lose
 
-NODE teleport rotate "You send one player through the B-to-A teleporter. The loud sound is heard - defenders rotate immediately!"
+NODE teleport rotate "One player goes through the teleporter. The loud sound is heard - defenders rotate immediately."
+BG teleport data/images/bind_spawn.png
 CHOICE teleport a "Execute A before the rotation arrives" a_flash
-CHOICE teleport b "Fake teleport - actually go B" b_clear
-CHOICE teleport w "Wait in teleporter, let team push A" a_plant
+CHOICE teleport b "It was a fake - full team pushes B" b_clear
+CHOICE teleport w "Hold the teleporter and let team push A" a_plant
