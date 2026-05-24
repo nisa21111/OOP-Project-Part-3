@@ -28,6 +28,7 @@ class MainMenuScreen : public Screen {
     int                      selectedAgent_ = 0;
 
     std::unique_ptr<TextPanel> agentInfoPanel_;
+    std::unique_ptr<TextPanel> stratInfoPanel_;
 
     sf::Text  stratLabel_;
     std::vector<Button>      stratButtons_;
@@ -45,6 +46,7 @@ class MainMenuScreen : public Screen {
     void buildLayout();
     void updateSelectionVisuals();
     void updateAgentInfo();
+    void updateStratInfo();
 
 public:
     MainMenuScreen(sf::Vector2u windowSize,

@@ -86,6 +86,14 @@ void MainMenuScreen::buildLayout() {
     agentInfoPanel_->setTitle("Select an agent");
     updateAgentInfo();
 
+    stratInfoPanel_ = std::make_unique<TextPanel>(
+        *font_,
+        sf::Vector2f(60.f, 510.f),
+        sf::Vector2f(760.f, 75.f),
+        15);
+    stratInfoPanel_->setTitle("Strategy");
+    updateStratInfo();
+
     stratLabel_ = sf::Text(*font_, "SELECT STRATEGY", 22);
     stratLabel_.setFillColor(Theme::AccentGold);
     stratLabel_.setPosition({ 60.f, 418.f });
@@ -124,6 +132,17 @@ void MainMenuScreen::updateAgentInfo() {
     catch (...) {}
 }
 
+void MainMenuScreen::updateStratInfo() {
+    if (!stratInfoPanel_) return;
+    static const std::array<std::string, 3> descs = {
+        "Balanced: Both map control and team coordination matter equally.",
+        "Aggressive: Map control is key. High risk, high reward. Spike drops hurt less.",
+        "Coordinated: Team coordination is everything. Any miscommunication is costly."
+    };
+    stratInfoPanel_->setTitle("STRATEGY: " + stratIds_[selectedStrat_]);
+    stratInfoPanel_->setText(descs[selectedStrat_]);
+}
+
 void MainMenuScreen::updateSelectionVisuals() {
     for (size_t i = 0; i < mapButtons_.size(); ++i)
         mapButtons_[i].setSelected(static_cast<int>(i) == selectedMap_);
@@ -158,6 +177,7 @@ void MainMenuScreen::handleEvent(const sf::Event& event) {
         if (stratButtons_[i].handleEvent(event)) {
             selectedStrat_ = static_cast<int>(i);
             updateSelectionVisuals();
+            updateStratInfo();
         }
     }
 
@@ -203,5 +223,6 @@ void MainMenuScreen::draw(sf::RenderWindow& window) {
     for (auto& b : stratButtons_) b.draw(window);
 
     if (startButton_) startButton_->draw(window);
+    if (stratInfoPanel_) stratInfoPanel_->draw(window);
     if (quitButton_)  quitButton_->draw(window);
 }

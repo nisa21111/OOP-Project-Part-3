@@ -147,6 +147,16 @@ void StatsScreen::onEnter(const std::string& payload) {
     statLines_[5].setString(wrss.str());
     statLines_[5].setFillColor(wr >= 50.f ? sf::Color(80, 255, 120) : Theme::AccentRed);
 
+    int total = teamCoord_ + mapControl_;
+    std::string rating;
+    sf::Color ratingColor;
+    if (total >= 14) { rating = "S TIER - Flawless";  ratingColor = sf::Color(255, 215, 0); }
+    else if (total >= 10) { rating = "A TIER - Clean";      ratingColor = sf::Color(80, 255, 120); }
+    else if (total >= 6) { rating = "B TIER - Sloppy";     ratingColor = sf::Color(255, 160, 40); }
+    else { rating = "C TIER - Chaotic";    ratingColor = sf::Color(255, 70, 70); }
+    statLines_[5].setString("Rating     :  " + rating);
+    statLines_[5].setFillColor(ratingColor);
+
     LOG_INFO("StatsScreen: " + std::string(won_ ? "WIN" : "LOSE") +
         " agent=" + agentId_ + " map=" + mapId_);
 }
