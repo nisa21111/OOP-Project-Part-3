@@ -16,8 +16,8 @@ class StatsScreen : public Screen {
     std::string mapId_;
     int         teamCoord_ = 5;
     int         mapControl_ = 5;
-    int         totalRounds_ = 0;
-    int         totalWins_ = 0;
+    int&         totalRounds_;
+    int&        totalWins_;
 
     BackgroundLayer           background_;
     sf::RectangleShape        resultBanner_;

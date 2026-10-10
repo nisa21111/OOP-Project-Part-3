@@ -7,7 +7,8 @@
 #include <sstream>
 
 
-Application::Application() {
+Application::Application()
+{
     ConfigManager::instance().loadFromFile("data/config/settings.cfg");
 
     int W = ConfigManager::instance().getInt("window_width", 1280);

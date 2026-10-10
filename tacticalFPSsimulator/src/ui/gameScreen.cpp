@@ -309,6 +309,8 @@ void GameScreen::update(sf::Time dt) {
                 payload += "|" + std::to_string(roundResult_.mapControl);
 
                 result_ = { ScreenStatus::ReplaceScreen, "stats", payload };
+                pendingExit_ = false;
+                fadeAlpha_ = 0.f;
             }
 
             else if (!pendingNodeId_.empty()) {
